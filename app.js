@@ -12,12 +12,13 @@ var appEnv = cfenv.getAppEnv();
 app.use( express.static( __dirname + '/public' ) );
 app.use( bodyParser.urlencoded( { extended: true, limit: '10mb' } ) );
 //app.use( bodyParser.urlencoded() );
-app.use( multer( { dest: './tmp/' } ).single( 'attachment_file' ) );
+app.use( multer( { dest: './tmp/' } ).single( 'file' ) );
 app.use( bodyParser.json() );
 
 app.post( '/image', function( req, res ){
   res.contentType( 'application/json; charset=utf-8' );
   console.log( 'POST /image' );
+  console.log( req.file );
 
   var filepath = req.file.path;
   var filetype = req.file.mimetype;
