@@ -26,6 +26,7 @@ function selectReadFile( e ){
     var form = $('#form1').get()[0];
     var data = new FormData( form );
     //data.append( '_id', id );
+    console.log( data );
     $.ajax({
       type: 'POST',
       url: '/image',
@@ -116,7 +117,7 @@ function printWidthHeight( width_height_id, flag, w, h ){
   <h1>Camera Capture</h1>
   <p>リサイズ前画像 <span id="src-width-height">width: height: </span></p>
   <p>リサイズ後画像 <span id="dst-width-height">width: height: </span></p>
-  <p><form id="form1" enctype="multipart/form-data"><input type="file" accept="image/*" capture="camera" id="file-image"/></form></p>
+  <p><form id="form1" enctype="multipart/form-data"><input type="file" accept="image/*" capture="camera" name="file" id="file-image"/></form></p>
   <canvas id="mycanvas"></canvas>
 </body>
 </html>

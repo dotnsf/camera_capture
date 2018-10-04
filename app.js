@@ -3,6 +3,7 @@
 var cfenv = require( 'cfenv' );
 var bodyParser = require( 'body-parser' );
 var express = require( 'express' );
+var fs = require( 'fs' );
 var ExifImage = require( 'exif' ).ExifImage;
 var multer = require( 'multer' );
 var app = express();
@@ -41,20 +42,28 @@ app.post( '/image', function( req, res ){
     };
 
     try{
-      new ExifImage( { image: filepath }, function( err, exifData ){
+      new ExifImage( { image: filepath }, function( err, exif ){
         if( err ){
           console.log( 'Error: ' + err.message );
+
+          fs.unlink( filepath, function( err ){} );
+          res.write( JSON.stringify( { status: true, doc: doc }, 2, null ) );
+          res.end();
         }else{
-          console.log( exifData );
+          console.log( exif );
+
+          fs.unlink( filepath, function( err ){} );
+          res.write( JSON.stringify( { status: true, doc: doc, exif: exif }, 2, null ) );
+          res.end();
         }
       });
     }catch( error ){
       console.log( error );
-    }
 
-    fs.unlink( filepath, function( err ){} );
-    res.write( JSON.stringify( { status: true, doc: doc }, 2, null ) );
-    res.end();
+      fs.unlink( filepath, function( err ){} );
+      res.write( JSON.stringify( { status: true, doc: doc }, 2, null ) );
+      res.end();
+    }
   }else{
     fs.unlink( filepath, function( err ){} );
     res.status( 400 );
